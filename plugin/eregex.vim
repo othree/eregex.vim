@@ -679,7 +679,7 @@ function! s:Ematch(...)
     let string = a:1
     let delim=string[0]
 
-    if delim !=# '/'
+    if delim !=# '/' && delim !=# '?' 
         let v:errmsg= "The delimiter `" . delim . "' isn't available,  use `/' ."
         echo v:errmsg
         return
