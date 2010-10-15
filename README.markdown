@@ -17,7 +17,6 @@ Add the following three lines to your vimrc file.
 
 Now you can use / to find. :%S// (uppercase S) to replace.
 
-===============================================================
 ## License
 
 Author     : 安久津  
