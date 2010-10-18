@@ -2,7 +2,7 @@
 
 ## Installation
 
-Vimball package will not release until english doc is ready.
+Vimball package will not release until English doc is ready.
 Now you can clone this repo and use [vim-makefile][] to install.
 
 [vim-makefile]:http://github.com/c9s/vim-makefile
@@ -14,8 +14,10 @@ Add the following three lines to your vimrc file.
     nnoremap / :M/
     nnoremap ? :M?
     nnoremap ,/ /
+    nnoremap ,? ?
 
 Now you can use / to find. :%S// (uppercase S) to replace.
+You can use ,/ to use the origin / .
 
 ## License
 
