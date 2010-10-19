@@ -19,7 +19,7 @@
 9. Options                                   |eregex-options|
 10. Multiline                                |eregex-multiline|
 11. Limitation of Delimiter                  |eregex-limitation-of-delimiter|
-12. About Vim RegExp                         |eregex-about-vimregex|
+12. About Vim Regexp                         |eregex-about-vimregex|
 
 ==============================================================================
 1. License                                     *eregex-license-to-use*
@@ -246,7 +246,7 @@ Not support
     Vim doesn't support these features.
     (?i:a) and (?-i) neither.
 
-Vim の正規表現で使えないもの
+Unusable Vim notation
 --------------------
     \%(re\) 等、パレン(丸カッコ) を使うもの全般。
     ~	matches the last given substitute string
@@ -260,18 +260,16 @@ Vim の正規表現で使えないもの
                 \x82\xa0  => 'あ' ( shift-jis, cp932 )
                 ただし、0x00 と 0x0a と 0x08 は変換しません。
 
-Vim の正規表現で使えるもの
+Usable Vim notations
 --------------------
-    大抵使えます。(^^;)
     \d, \D, \w, \W, \s, \S, \a, \A, \u, \U, \b, ...
     \<, \>, \zs, \ze
     \_[a-z], \%[abc], [[:alpha:]], \_., \_^, \_$
     \%23l, \%23c, \%23v, \%#
-    など。
 
 ==============================================================================
-9. 特殊なオプションとアトム                    *eregex-options*
-    Note:   "^L" は \x0c
+9. Special Option and Atom                      *eregex-options*
+    Note:   "^L" is \x0c
 
     eregex.vim         Vim
 ---------------------------------------
@@ -287,36 +285,35 @@ Vim の正規表現で使えるもの
     :M/./D             /\_./
 
     :M/\s[^az]./M      /[ \t\r\n^L]\_[^az]./
-    :M/\s[^az].\M/     同上。
+    :M/\s[^az].\M/     Same as above.
 
     :M/\s[^az]./m      /[ \t\r\n^L]\_[^az]\_./
-    :M/\s[^az].\m/     同上。
+    :M/\s[^az].\m/     Same as above.
 
 +--------+------+--------------------------------------------------------+
-| OPTION | ATOM | 説明                                                   |
+| OPTION | ATOM | NOTE                                                   |
 +--------+------+--------------------------------------------------------+
-| /i     | \c   | 大小文字の区別無し。                                   |
-| /I     | \C   | 大小文字の区別あり。                                   |
+| /i     | \c   | Case insensitive                                       |
+| /I     | \C   | Case sensitive                                         |
 +--------+------+--------------------------------------------------------+
-| /S     |      | \s および \S を [ \t\r\n^L] や [^ \t\r^L] に変換する。 |
-| /C     |      | 補集合が改行にもマッチする。                           |
-| /D     |      | ドットが改行にもマッチする。                           |
+| /S     |      | \s and \S becomes [ \t\r\n^L] and [^ \t\r^L]           |
+| /C     |      | [] brack will also match line break.                   |
+| /D     |      | Dot will match line break                              |
 +--------+------+--------------------------------------------------------+
-| /M     | \M   | /S と /C を行なう。      部分マルチライン。            |
-| /m     | \m   | /S と /C と /D を行なう。完全マルチライン。            |
+| /M     | \M   | Use /S and /C . Partial multiline support              |
+| /m     | \m   | Use /S, /C and /D . All support multiline              |
 +--------+------+--------------------------------------------------------+
 
     Note:
-        (A)   オプション /iImM
+        (A)   Option /iImM
         (B)   \c, \C, \m, \M
         (C)   (?i), (?I), (?m), (?M)
-        これらが同時に指定された場合、上の方が優先順位が高い。
-        ちなみに、(?M) と (?m) は、ブラケットの中の \s には適用されません。
+        If you use these at the same time. The priority will follow the order.
+        If you use (?M) and (?m), \s in bracket will not work.
 
 ==============================================================================
-10. マルチライン                                *eregex-multiline*
+10. Multiline                                     *eregex-multiline*
 
-    とりあえず以下の表を見て。(^^;)
 +-----+----------------------------------------------+--------------------+
 | Num | eregex.vim      => vim regex                 | ruby regex         |
 +-----+----------------------------------------------+--------------------+
@@ -345,28 +342,29 @@ Vim の正規表現で使えるもの
         原則的に Vim では、[^...] の中に \n を書いてはいけません。
 
 ==============================================================================
-11. デリミタの制限                            *eregex-limitation-of-delimiter*
+11. Limitation of Delimiter                     *eregex-limitation-of-delimiter*
 
-    :M で使える区切り文字は / だけです。
-    :S 、:G  および :V で使える区切り文字は /, #, @ です。
-    これらの使用方法は :s 、:g 、:v と同じです。
-    制限も同様です。
+    :M only support / and ? .
+    :S, :G and :V supports /, #, @ .
+    Usage and limitation are the same as :s, :g and :v
 
-    区切り文字を @ にするといろいろ制限があります。
+    Delimiter use @ will have some more limitation.
 
-    一見うまくいきそうに見えてダメな例。
-    "foo@bar.baz.co.jp" を "foo@hoge.co.jp" に置換しようとして、
+    For example:
+    To replace "foo@bar.baz.co.jp" with "foo@hoge.co.jp"
 >
     :%s@\<foo\@bar\.baz\.co\.jp\>@foo\@hoge.co.jp@Ig
 <
-    は、エラーです。
-    Vim の正規表現で、\@ は特別な扱いを受けています。
+    Will fail.
+    \@ have special meaning in Vim regular expression .
 ==============================================================================
-12. Vim の正規表現について                      *eregex-about-vimregex*
+12. About Vim Regular Expression                 *eregex-about-vimregex*
 
-    以下 カーソルを "111,222,333" の行に置いて、:S... を実行してください。
+    The following samples are all in a line with content "111,222,333".
+    And use :S to execute replace.
 
-(1)通常のサブマッチ。
+
+(1)Regular submatch
 
 111,222,333
 >
@@ -374,9 +372,9 @@ Vim の正規表現で使えるもの
 <
 666
 
-(2)Vim 独自機能。
-    マッチデータ($&, &, matchdata) と、サブマッチを分離できます。
-    \zs と \ze を使う。 See :h /\zs
+(2)Vim special feature
+    Match data($&, &, matchdata) and submatch can be seperated.
+    Use \zs and \ze . See :h /\zs for more information.
 
 111,222,333
 >
@@ -386,7 +384,7 @@ Vim の正規表現で使えるもの
 
 
 (3)
-    以下の方が分かりやすいかも。
+    One more example
 
 111,222,333
 >
@@ -394,29 +392,28 @@ Vim の正規表現で使えるもの
 <
 111,666,333
 
-    \zs と \ze を使うと、マッチデータに含まれないサブマッチを操作できます。
+    Use \zs and \ze to control matchdata and submatch.
 
-(4) \_x の機能。
+(4) \_x 
 
-    \u で [A-Z] を表す。
-    \_u で [A-Z\n] を表す。
-    \_[A-Z] は [A-Z\n] と同じ。
+    \u is [A-Z] 
+    \_u is [A-Z\n] 
+    \_[A-Z] is [A-Z\n] 
 
-    大文字以外で改行を含む文字。
+    Not uppercase characters and line break.
     \_U  == \_[^A-Z]
 
-    \_. は改行を含む任意の文字。
+    \_. is any character including line break.
 
 
-(5) ^ と \_^ および $ と \_$ の違い。
+(5) Difference between ^ and \_^ or $ and \_$ 
 
-    $ を例にとります。
+    Take $ for example
 
-    通常 $ は
-        (1)正規表現の一番最後。
-        (2) ) の直前。
-        (3) | の直前。
-    にある場合だけ行末を表す。
+    $ is used in the following position
+        (1) The last of Regexp notation.
+        (2) Just before ) .
+        (3) Just before | .
 
     ところが任意の場所で行末を表せるのが \_$ 。
 
@@ -428,32 +425,12 @@ Vim の正規表現で使えるもの
 
     ここで使っている \_$ の代わりに $ を使っても意図した結果になりません。
     Note:
-        \_^ と \_$ は perl の /m オプションとは全然違います。
+        \_^ と \_$ is totally different from /m option in perl Regexp.
 
 
 ==============================================================================
 13. Changes
 revision 2.56
     (1) Add support for "?"
-
-revision 2.55
-    (1) E2v() にバージョン番号や、sub-replace-special の置換を加えた。
-    (2) \v を 0x0b に置換するようにした。
-    (3) :M/pattern/ でマッチしなくても、@/ を更新した。
-
-revision 2.35
-    (1) オプション S,C,D,M,m の追加と変更。
-
-revision 1.4x
-    (1) :S/\x2f/\\/g とかすると、:s///\\/g に変換してしまうバグ修正。
-    (2) エスケープされたデリミタを検索履歴ではアンエスケープした。
-        デリミタが '@' の場合を除く。
-    (3) オプション m の修正。
-
-revision 1.13
-    :G で ! を使えるようにした。
-
-revision 1.1.1.21
-    :S の /c オプションで確認のプロンプトが見えなくなってしまう問題修正。
 
 -- vim:ft=help:
