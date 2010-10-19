@@ -1,8 +1,8 @@
-*eregex_j.txt*
+*eregex.jax*
 
     ファイル:       eregex.vim, eregex_e.vim
     作者:           AKUTSU toshiyuki <locrian@mbd.ocn.ne.jp>
-    バージョン:     2.55
+    バージョン:     2.56
     必要なもの:     Vim version 6.1 かそれ以降。
     説明:           eregex.vim は、拡張正規表現を Vim の正規表現に変換します。
                     eregex_e.vim は、eregex.vim のコマンドを評価します。
@@ -371,7 +371,7 @@ Vim の正規表現で使えるもの
 ==============================================================================
 11. デリミタの制限                            *eregex-limitation-of-delimiter*
 
-    :M で使える区切り文字は / だけです。
+    :M で使える区切り文字は / と ? だけです。
     :S 、:G  および :V で使える区切り文字は /, #, @ です。
     これらの使用方法は :s 、:g 、:v と同じです。
     制限も同様です。
