@@ -5,7 +5,7 @@
     Maintainer: othree <othree@gmail.com>
     Version:    2.56
     Required:   Vim version 6.1
-    Note:       eregex.vim is used to convert regexp notation.
+    Note:       eregex.vim is used to convert regexp notation style.
                 eregex_e.vim is used to map command for eregex.vim.
 
 1. License                                   |eregex-license-to-use|
@@ -28,7 +28,7 @@
     It is free to change and redistribute this script. You can think as an
     GPL License software.
 
-    Author will not take any reponsibility for damages due to using this
+    Author will not take any responsibility for damages due to using this
     script (eregex.vim, eregex_e.vim).
 
 ==============================================================================
@@ -48,7 +48,6 @@ E2v({extendedregex} [, {iISCDMm}])
 >
     :let vimregex = E2v('(?<=abc),\d+,(?=xzy)','i')
     :echo vimregex
-    \c\%(abc\)\@<=,\d\+,\%(xzy\)\@=
 <
     Detail of option value can be found at |eregex-options| 
     or |eregex-multiline|
@@ -102,7 +101,7 @@ E2v({replacement}, {R1,R2,R3})
 
 (1) :E2v command
 
-    Change the regexp notation of the cursor line.
+    Change the regexp notation style of the cursor line.
 
 (\d{1,3})(?=(\d\d\d)+($|\D))
 
@@ -196,12 +195,11 @@ nnoremap ,? /
 7. Principle                                     *eregex-principle*
     eregex.vim adopts the way of extended regex about "alternation",
     "repetition" and "grouping".
-    eregex.vim において、
 
 ==============================================================================
 8. Convert Table                                 *eregex-table*
 
-    Perl notation on left side. Vim notation('magic') on right side.
+    Perl style on left side. Vim style ('magic') on right side.
 
 Alternation
 --------------------
@@ -246,9 +244,9 @@ Not support
     Vim doesn't support these features.
     (?i:a) and (?-i) neither.
 
-Unusable Vim notation
+Unusable Vim regexp notation
 --------------------
-    \%(re\) 等、パレン(丸カッコ) を使うもの全般。
+    \%(re\) and square rackets
     ~	matches the last given substitute string
     \m	'magic' on for the following chars in the pattern
     \M	'magic' off for the following chars in the pattern
@@ -256,11 +254,11 @@ Unusable Vim notation
     \V	the following chars in the pattern are "very nomagic"
 
     \x	hex digit:			[0-9A-Fa-f]
-                \\x[0-9A-Fa-f]{1,2} の場合、文字そのものに変換する。
+                \\x[0-9A-Fa-f]{1,2} will change to character.
                 \x82\xa0  => 'あ' ( shift-jis, cp932 )
-                ただし、0x00 と 0x0a と 0x08 は変換しません。
+                But 0x00 and 0x0a and 0x08 will not change.
 
-Usable Vim notations
+Usable Vim regexp notations
 --------------------
     \d, \D, \w, \W, \s, \S, \a, \A, \u, \U, \b, ...
     \<, \>, \zs, \ze
@@ -297,7 +295,7 @@ Usable Vim notations
 | /I     | \C   | Case sensitive                                         |
 +--------+------+--------------------------------------------------------+
 | /S     |      | \s and \S becomes [ \t\r\n^L] and [^ \t\r^L]           |
-| /C     |      | [] brack will also match line break.                   |
+| /C     |      | [] brackets will also match line break.                |
 | /D     |      | Dot will match line break                              |
 +--------+------+--------------------------------------------------------+
 | /M     | \M   | Use /S and /C . Partial multiline support              |
@@ -327,19 +325,16 @@ Usable Vim notations
 | (3) | :M/a\s[^az].z/m => /a[ \t\r\n^L]\_[^az]\_.z/ | /a\s[^az].z/m      |
 +-----+----------------------------------------------+--------------------+
 
-    (1) は、「文字クラス」が Vim 流。
-    (2) は、「文字クラス」が Ruby 流。
-        Vim 流に言えば、改行にマッチする所が増えたので、部分マルチライン。
-        Ruby 流に言えば、マルチラインでない。よってオプションは大文字の M 。
-    (3) は、いわゆる Ruby 流のマルチライン。
+    (1) is Vim style character class.
+    (2) is Ruby style character class.
+    (3) is Ruby style multiline.
 
     Note:
-        Vim の正規表現では、/[^az]/ は改行にマッチしません。
-        改行にマッチしないことを明示して /[^az\n]/ と書く必要はありません。
-        /[^az\n]/ は意図に反して改行にもマッチします。
-        よって、本来 /[^ \t\r\n^L]/ とするべきところを、/[^ \t\r^L]/ に
-        変換している場合があります。
-        原則的に Vim では、[^...] の中に \n を書いてはいけません。
+        In Vim style regexp, /[^az]/ will not match break line.
+        But it is incorrect to to write /[^az\n]/ to point this out. 
+        /[^az\n]/ will match breakline.
+        So we might use /[^ \t\r^L]/ instead of /[^ \t\r\n^L]/ .
+        Just remember not write \n in [^...] .
 
 ==============================================================================
 11. Limitation of Delimiter                     *eregex-limitation-of-delimiter*
@@ -411,11 +406,11 @@ Usable Vim notations
     Take $ for example
 
     $ is used in the following position
-        (1) The last of Regexp notation.
+        (1) The last of regexp.
         (2) Just before ) .
         (3) Just before | .
 
-    ところが任意の場所で行末を表せるのが \_$ 。
+    \_$ can be used anywhere to present as a line break.
 
 111,222,333
 >
@@ -423,9 +418,9 @@ Usable Vim notations
 <
 111,222,333,666
 
-    ここで使っている \_$ の代わりに $ を使っても意図した結果になりません。
+    If use $ instead of \_$ in this example will have different result.
     Note:
-        \_^ と \_$ is totally different from /m option in perl Regexp.
+        \_^ and \_$ is totally different from /m option in Perl regexp.
 
 
 ==============================================================================
