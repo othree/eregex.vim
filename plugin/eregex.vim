@@ -209,7 +209,7 @@ let loaded_eregex=1
 "=============================================================================
 "Commands And Mappings:
 command! -nargs=? -range E2v :<line1>,<line2>call <SID>ExtendedRegex2VimRegexLineWise(<q-args>)
-command! -nargs=? M :call <SID>Ematch(<q-args>)
+command! -nargs=? -count M :let v:searchforward = <SID>Ematch(<q-args>)
 "command! -nargs=? -range S :<line1>,<line2>call <SID>Esubstitute(<q-args>)
 command! -nargs=? -range S :<line1>,<line2>call <SID>Esubstitute(<q-args>) <Bar> :noh
 
@@ -727,6 +727,11 @@ function! s:Ematch(...)
         echo v:errmsg
     endif
 
+    if delim == '?'
+      return 0
+    else
+      return 1
+    endif
 endfunction
 "end s:Ematch()
 "-----------------------------------------------------------------------------
