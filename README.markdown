@@ -16,7 +16,7 @@ add the following line into your .vimrc file:
 
     nnoremap <leader>/ :call EregexToggle()<CR>
 
-Then you can use <leader>/ to toggle eregex.vim.
+Then you can use  &lt;leader>/ to toggle eregex.vim.
 
 For replacement, use :%S// (uppercase S) to use perl style regexp.
 
