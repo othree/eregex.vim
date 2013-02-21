@@ -9,15 +9,16 @@ Use [Vundle][] or [pathogen][] is suggested.
 
 ## Usage
 
-Add the following three lines to your vimrc file.
+After installed. Just press / or ? for search, it will map to :M command.
 
-    nnoremap <expr> / ":<C-U>".v:count1."M/"
-    nnoremap <expr> ? ":<C-U>".v:count1."M?"
-    nnoremap ,/ /
-    nnoremap .? ? 
+You can call EregexToggle funtion to toggle the keymapping. For example, 
+add the following line into your .vimrc file:
 
-Now you can use / to find. :%S// (uppercase S) to replace.
-You can use ,/ to use the origin / .
+    nnoremap <leader>/ :call EregexToggle()<CR>
+
+Then you can use <leader>/ to toggle eregex.vim.
+
+For replacement, use :%S// (uppercase S) to use perl style regexp.
 
 ## License
 
