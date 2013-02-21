@@ -725,7 +725,7 @@ function! s:Ematch(...)
     if v:errmsg ==# ''
         redraw!
     else
-        echo 'M' . a:1
+        echo 'M' . a:2
         echo v:errmsg
     endif
 
