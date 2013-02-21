@@ -209,7 +209,7 @@ let loaded_eregex=1
 "=============================================================================
 "Commands And Mappings:
 command! -nargs=? -range E2v :<line1>,<line2>call <SID>ExtendedRegex2VimRegexLineWise(<q-args>)
-command! -nargs=? -count M :let v:searchforward = <SID>Ematch(<q-args>)
+command! -nargs=? -count=0 M :let v:searchforward = <SID>Ematch(<count>, <q-args>)
 "command! -nargs=? -range S :<line1>,<line2>call <SID>Esubstitute(<q-args>)
 command! -nargs=? -range S :<line1>,<line2>call <SID>Esubstitute(<q-args>) <Bar> :noh
 
@@ -675,9 +675,10 @@ endfunction
 "end E2v()
 "-----------------------------------------------------------------------------
 function! s:Ematch(...)
-    if strlen(a:1) <= 1 | return | endif
+    if strlen(a:2) <= 1 | return | endif
 
-    let string = a:1
+    let ccount = a:1
+    let string = a:2
     let delim=string[0]
 
     if delim !=# '/' && delim !=# '?' 
@@ -711,8 +712,9 @@ function! s:Ematch(...)
         let offset = delim
     endif
 
-    let cmd = 'normal! ' . delim . regex . offset . "\<CR>"
+    let cmd = 'normal! ' . ccount . delim . regex . offset . "\<CR>"
     let v:errmsg=''
+    set nohlsearch
     silent! exec cmd
     if (v:errmsg !~# '^E\d\+:') || (v:errmsg =~# '^E486:')
         "v130

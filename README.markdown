@@ -2,19 +2,19 @@
 
 ## Installation
 
-Vimball package will not release until English doc is ready.
-Now you can clone this repo and use [vim-makefile][] to install.
+Use [Vundle][] or [pathogen][] is suggested.
 
-[vim-makefile]:http://github.com/c9s/vim-makefile
+[Vundle]:https://github.com/gmarik/vundle
+[pathogen]:https://github.com/tpope/vim-pathogen
 
 ## Usage
 
 Add the following three lines to your vimrc file.
 
-    nnoremap / :M/
-    nnoremap ? :M?
+    nnoremap <expr> / ":<C-U>".v:count1."M/"
+    nnoremap <expr> ? ":<C-U>".v:count1."M?"
     nnoremap ,/ /
-    nnoremap ,? ?
+    nnoremap .? ? 
 
 Now you can use / to find. :%S// (uppercase S) to replace.
 You can use ,/ to use the origin / .
@@ -25,6 +25,6 @@ Author     : 安久津
 Origin     : [eregex.vim][origin]  
 Maintainer : othree  
 
-Might release under MIT License.
+`:help eregex-license-to-use` for license information.
 
 [origin]:http://www.vector.co.jp/soft/unix/writing/se265654.html
