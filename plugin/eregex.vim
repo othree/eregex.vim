@@ -285,6 +285,32 @@ let s:min=matchstr(s:tmp, '\.\zs\d\+') + 0
 let s:version = s:maj + s:min
 unlet s:tmp s:maj s:min
 
+"v260
+let s:enable = 0
+
+function! EregexToggle(...)
+  let silent = 0
+  if exists('a:1') && a:1
+    let silent = 1
+  endif
+  if s:enable == 0
+    nnoremap <expr> / ":<C-U>".v:count1."M/"
+    nnoremap <expr> ? ":<C-U>".v:count1."M?"
+    if silent != 1
+      echo "eregx.vim key mapping enabled"
+    endif
+  else
+    nunmap /
+    nunmap ?
+    if silent != 1
+      echo "eregx.vim key mapping disabled"
+    endif
+  endif
+  let s:enable = 1 - s:enable
+endfun
+
+call EregexToggle(1)
+
 "=============================================================================
 "Functions:
 function! s:Push(fct, kind)
