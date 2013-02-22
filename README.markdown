@@ -7,7 +7,7 @@ Use [Vundle][] or [pathogen][] is suggested.
 [Vundle]:https://github.com/gmarik/vundle
 [pathogen]:https://github.com/tpope/vim-pathogen
 
-## Usage
+## Quick Start
 
 After installed. Just press / or ? for search, it will map to :M command.
 
@@ -19,6 +19,14 @@ add the following line into your .vimrc file:
 Then you can use  &lt;leader>/ to toggle eregex.vim.
 
 For replacement, use :%S// (uppercase S) to use perl style regexp.
+
+See `:help eregex` for more information.
+
+## Config
+
+Default disable, put this line in vimrc:
+
+    let g:eregex_default_enable = 0
 
 ## License
 
