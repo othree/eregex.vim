@@ -287,6 +287,14 @@ let s:version = s:maj + s:min
 unlet s:tmp s:maj s:min
 
 "v260
+if !exists('g:eregx_forward_delim')
+  let g:eregx_forward_delim = '/'
+endif
+
+if !exists('g:eregx_backward_delim')
+  let g:eregx_backward_delim = '?'
+endif
+
 let s:enable = 0
 
 function! eregex#toggle(...)
@@ -295,14 +303,14 @@ function! eregex#toggle(...)
     let silent = 1
   endif
   if s:enable == 0
-    nnoremap <expr> / ":<C-U>".v:count1."M/"
-    nnoremap <expr> ? ":<C-U>".v:count1."M?"
+    exec 'nnoremap <expr> '.g:eregx_forward_delim.' ":<C-U>".v:count1."M/"'
+    exec 'nnoremap <expr> '.g:eregx_backward_delim.' ":<C-U>".v:count1."M?"'
     if silent != 1
       echo "eregx.vim key mapping enabled"
     endif
   else
-    nunmap /
-    nunmap ?
+    exec 'nunmap '.g:eregx_forward_delim
+    exec 'nunmap '.g:eregx_backward_delim
     if silent != 1
       echo "eregx.vim key mapping disabled"
     endif

@@ -28,6 +28,11 @@ Default disable, put this line in vimrc:
 
     let g:eregex_default_enable = 0
 
+Custom search delimeter:
+
+    let g:eregx_forward_delim = '/'
+    let g:eregx_backward_delim = '?'
+
 ## Changes
 
 ### 2.60
@@ -35,6 +40,7 @@ Default disable, put this line in vimrc:
 * Support backword search.
 * Support count argument.
 * Use function to auto map keys.
+* Defin custom search delimeter
 
 ## License
 
