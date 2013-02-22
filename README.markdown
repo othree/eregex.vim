@@ -11,7 +11,7 @@ Use [Vundle][] or [pathogen][] is suggested.
 
 After installed. Just press / or ? for search, it will map to :M command.
 
-You can call EregexToggle funtion to toggle the keymapping. For example, 
+You can call eregex#toggle funtion to toggle the keymapping. For example, 
 add the following line into your .vimrc file:
 
     nnoremap <leader>/ :call eregex#toggle()<CR>
