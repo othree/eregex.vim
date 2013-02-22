@@ -30,8 +30,8 @@ Default disable, put this line in vimrc:
 
 Custom search delimeter:
 
-    let g:eregx_forward_delim = '/'
-    let g:eregx_backward_delim = '?'
+    let g:eregex_forward_delim = '/'
+    let g:eregex_backward_delim = '?'
 
 ## Changes
 
