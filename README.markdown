@@ -40,7 +40,8 @@ Custom search delimeter:
 * Support backword search.
 * Support count argument.
 * Use function to auto map keys.
-* Define custom search delimeter
+* Define custom search delimeter.
+* hlsearch works fine.
 
 ## License
 
