@@ -210,7 +210,7 @@ let loaded_eregex=1
 "=============================================================================
 "Commands And Mappings:
 command! -nargs=? -range E2v :<line1>,<line2>call <SID>ExtendedRegex2VimRegexLineWise(<q-args>)
-command! -nargs=? -count=1 M :let v:searchforward = <SID>Ematch(<count>, <q-args>) | if <count> > 1 | set hlsearch on | endif
+command! -nargs=? -count=1 M :let s:eregex_tmp_hlsearch = &hlsearch | let v:searchforward = <SID>Ematch(<count>, <q-args>) | if s:eregex_tmp_hlsearch == 1 | set hlsearch | endif
 "command! -nargs=? -range S :<line1>,<line2>call <SID>Esubstitute(<q-args>)
 command! -nargs=? -range S :<line1>,<line2>call <SID>Esubstitute(<q-args>) <Bar> :noh
 
