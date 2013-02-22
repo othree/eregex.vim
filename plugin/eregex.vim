@@ -859,13 +859,13 @@ function! s:Eglobal(bang, ...) range
     let re_end = '\%(' . re_sep . '\|' . re_command . '\|' . re_command_less . '\)'
 
     "--------------------
-let toprxp0 = '^' . delim . '\(' . re_pattern . '\)\(' . delim . re_offset . re_sep . '\)'
-let toprxp1 = '^' . delim . '\(' . re_pattern . '\)\(' . delim . re_sep . '\)'
-let toprxp2 = '^'
+    let toprxp0 = '^' . delim . '\(' . re_pattern . '\)\(' . delim . re_offset . re_sep . '\)'
+    let toprxp1 = '^' . delim . '\(' . re_pattern . '\)\(' . delim . re_sep . '\)'
+    let toprxp2 = '^'
 
-let endrxp0 = delim . '\(' . re_pattern . '\)\(' . delim . re_offset . re_end . '\)'
-let endrxp1 = delim . '\(' . re_pattern . '\)\(' . delim . re_end . '\)'
-let endrxp2 = delim . '\(' . re_pattern . '\)' . re_command_less
+    let endrxp0 = delim . '\(' . re_pattern . '\)\(' . delim . re_offset . re_end . '\)'
+    let endrxp1 = delim . '\(' . re_pattern . '\)\(' . delim . re_end . '\)'
+    let endrxp2 = delim . '\(' . re_pattern . '\)' . re_command_less
 
     "--------------------
     let mtop = -1
