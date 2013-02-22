@@ -1,12 +1,13 @@
 "=============================================================================
 " File:         eregex.vim and eregex_e.vim
 " Author:       AKUTSU toshiyuki <locrian@mbd.ocn.ne.jp>
+" Maintainer:   Kao, Wei-Ko <othree@gmail.com>
 " Requirements: Vim version 6.1 and later.
 " Description:  eregex.vim is a converter from extended regex to vim regex
 "               eregex_e.vim is an evaluater for command of eregex.vim
 "               The meaning of extended regex is pseudo ruby/perl-style regex.
-"               Previous $Id: eregex.vim,v 2.55 2003-09-19 17:39:41+09 ta Exp $
-"               $Id: eregex.vim,v 2.56 2010-10-18 11:59:41+08 ta Exp $
+"               Previous $Id: eregex.vim,v 2.56 2010-10-18 11:59:41+08 ta Exp $
+"               $Id: eregex.vim,v 2.60 2013-02-22 14:38:41+08 ta Exp $
 " Note:         English isn't my mother tongue.
 "=============================================================================
 " Principle:
@@ -279,7 +280,7 @@ if exists('eregex_replacement')
 endif
 
 "v240
-let s:tmp=matchstr("$Revision: 2.56 $", '[0-9.]\+')
+let s:tmp=matchstr("$Revision: 2.60 $", '[0-9.]\+')
 let s:maj=matchstr(s:tmp, '\d\+') * 100
 let s:min=matchstr(s:tmp, '\.\zs\d\+') + 0
 let s:version = s:maj + s:min

@@ -28,6 +28,14 @@ Default disable, put this line in vimrc:
 
     let g:eregex_default_enable = 0
 
+## Changes
+
+### 2.60
+
+* Support backword search.
+* Support count argument.
+* Use function to auto map keys.
+
 ## License
 
 Author     : 安久津  
