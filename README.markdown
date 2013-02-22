@@ -14,7 +14,7 @@ After installed. Just press / or ? for search, it will map to :M command.
 You can call EregexToggle funtion to toggle the keymapping. For example, 
 add the following line into your .vimrc file:
 
-    nnoremap <leader>/ :call EregexToggle()<CR>
+    nnoremap <leader>/ :call eregex#toggle()<CR>
 
 Then you can use  &lt;leader>/ to toggle eregex.vim.
 

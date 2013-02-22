@@ -288,7 +288,7 @@ unlet s:tmp s:maj s:min
 "v260
 let s:enable = 0
 
-function! EregexToggle(...)
+function! eregex#toggle(...)
   let silent = 0
   if exists('a:1') && a:1
     let silent = 1
@@ -309,7 +309,9 @@ function! EregexToggle(...)
   let s:enable = 1 - s:enable
 endfun
 
-call EregexToggle(1)
+if !(exists('g:eregex_default_enable') && g:eregex_default_enable == 0)
+  call eregex#toggle(1)
+endif
 
 "=============================================================================
 "Functions:
