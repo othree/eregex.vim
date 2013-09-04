@@ -738,6 +738,9 @@ function! s:Ematch(...)
         let modifiers = substitute(offset, '\C[^' . s:str_modifiers . ']\+', "", "g")
         let offset = substitute(offset, '\C[' . s:str_modifiers . ']\+', "", "g")
     endif
+    if &ignorecase
+      let modifiers .= 'i'
+    endif
 
     let regex = s:ExtendedRegex2VimRegex(regex, modifiers)
     "v130
@@ -799,6 +802,9 @@ function! s:Esubstitute(...) range
     if options =~# '[' . s:str_modifiers . ']'
         let modifiers = substitute(options, '\C[^' . s:str_modifiers . ']\+', "", "g")
         let options = substitute(options, '\C[SCDmM]', "", "g")
+    endif
+    if &ignorecase
+      let modifiers .= 'i'
     endif
 
     let regex = s:ExtendedRegex2VimRegex(regex, modifiers)
