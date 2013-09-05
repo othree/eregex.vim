@@ -35,6 +35,10 @@ Custom search delimeter:
 
 ## Changes
 
+### 2.61
+
+* Support ignorecase
+
 ### 2.60
 
 * Support backword search.
