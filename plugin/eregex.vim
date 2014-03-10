@@ -738,7 +738,8 @@ function! s:Ematch(...)
         let modifiers = substitute(offset, '\C[^' . s:str_modifiers . ']\+', "", "g")
         let offset = substitute(offset, '\C[' . s:str_modifiers . ']\+', "", "g")
     endif
-    if &ignorecase
+
+    if &ignorecase && match(modifiers, 'I') == -1
       let modifiers .= 'i'
     endif
 
@@ -803,7 +804,7 @@ function! s:Esubstitute(...) range
         let modifiers = substitute(options, '\C[^' . s:str_modifiers . ']\+', "", "g")
         let options = substitute(options, '\C[SCDmM]', "", "g")
     endif
-    if &ignorecase
+    if &ignorecase && match(modifiers, 'I') == -1
       let modifiers .= 'i'
     endif
 
