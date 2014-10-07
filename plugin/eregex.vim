@@ -712,10 +712,13 @@ endfunction
 "end E2v()
 "-----------------------------------------------------------------------------
 function! s:Ematch(...)
-    if strlen(a:2) <= 1 | return | endif
-
     let ccount = a:1
-    let string = a:2
+    if strlen(a:2) <= 1
+        let string = a:2 . @/
+    else
+        let string = a:2
+    endif
+
     let delim=string[0]
 
     if delim !=# '/' && delim !=# '?' 
@@ -766,7 +769,7 @@ function! s:Ematch(...)
     if v:errmsg ==# ''
         redraw!
     else
-        echo 'M' . a:2
+        echo 'M' . string
         echo v:errmsg
     endif
 
