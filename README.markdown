@@ -2,33 +2,35 @@
 
 ## Installation
 
-Use [Vundle][] or [pathogen][] is suggested.
+It is recommended to install the script using [Vundle][] or [pathogen][].
 
 [Vundle]:https://github.com/gmarik/vundle
 [pathogen]:https://github.com/tpope/vim-pathogen
 
 ## Quick Start
 
-After installed. Just press / or ? for search, it will map to :M command.
+After installation, just press <kbd>/</kbd> or <kbd>?</kbd> as usual.
+This will map to `:M/` command, which is used to perform the PCRE search.
 
-You can call eregex#toggle funtion to toggle the keymapping. For example, 
-add the following line into your .vimrc file:
+You can call `eregex#toggle` funtion to toggle the keymapping. For example, 
+add the following line into your `.vimrc` file:
 
     nnoremap <leader>/ :call eregex#toggle()<CR>
 
-Then you can use  &lt;leader>/ to toggle eregex.vim.
+Then you can use <kbd><leader>/</kbd> to toggle the eregex.vim.
 
-For replacement, use :%S// (uppercase S) to use perl style regexp.
+For replacement, use `:%S//` (uppercase S) to trigger perl style regexp.
 
 See `:help eregex` for more information.
 
 ## Config
 
-Default disable, put this line in vimrc:
+To disable the script by default, put this line in your `.vimrc` file:
 
     let g:eregex_default_enable = 0
 
-Custom search delimeter:
+To change the search delimiter to something else than the default `/` and `?`,
+following options can be used:
 
     let g:eregex_forward_delim = '/'
     let g:eregex_backward_delim = '?'
@@ -37,14 +39,14 @@ Custom search delimeter:
 
 ### 2.61
 
-* Support ignorecase
+* Support for ignorecase
 
 ### 2.60
 
-* Support backword search.
-* Support count argument.
+* Support for the backword search.
+* Support for the count argument.
 * Use function to auto map keys.
-* Define custom search delimeter.
+* Support for custom search delimeters.
 * hlsearch works fine.
 
 ## License
@@ -53,6 +55,6 @@ Author     : 安久津
 Origin     : [eregex.vim][origin]  
 Maintainer : othree  
 
-`:help eregex-license-to-use` for license information.
+See `:help eregex-license-to-use` for license information.
 
 [origin]:http://www.vector.co.jp/soft/unix/writing/se265654.html
