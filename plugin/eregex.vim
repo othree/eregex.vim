@@ -723,7 +723,7 @@ function! s:Ematch(...)
 
     if delim !=# '/' && delim !=# '?' 
         let v:errmsg= "The delimiter `" . delim . "' isn't available,  use `/' ."
-        echo v:errmsg
+        echohl WarningMsg | echo v:errmsg
         return
     endif
 
@@ -769,8 +769,7 @@ function! s:Ematch(...)
     if v:errmsg ==# ''
         redraw!
     else
-        echo 'M' . string
-        echo v:errmsg
+        echohl WarningMsg | echo v:errmsg
     endif
 
     if delim == '?'
@@ -793,7 +792,7 @@ function! s:Esubstitute(...) range
     let rxp=substitute(rxp, 'delim', delim, "g")
     if string !~# rxp
         if s:eglobal_working==0
-            echo 'Invalid arguments S' . a:1
+            echohl WarningMsg | echo 'Invalid arguments S' . a:1
         endif
         return
     endif
@@ -851,10 +850,10 @@ function! s:Esubstitute(...) range
         if confirmoption==0
             if v:errmsg==# ''
                 if v:statusmsg !=# ''
-                    echo v:statusmsg
+                    echohl WarningMsg | echo v:statusmsg
                 endif
             else
-                echo v:errmsg
+                echohl WarningMsg | echo v:errmsg
             endif
         endif
     endif
@@ -967,7 +966,7 @@ function! s:GetDelim(str)
         return delim
     endif
     let v:errmsg = "The delimiter `" . delim . "' isn't available,  use " . valid
-    echo v:errmsg
+    echohl WarningMsg | echo v:errmsg
     return ''
 endfunction
 "end s:GetDelim()
