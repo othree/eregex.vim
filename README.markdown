@@ -43,6 +43,10 @@ Then you will have case sensitive match by default. You can always change it by 
 
 ## Changes
 
+### 2.62
+
+* Support ignorecase, smartcase. Add force case sensitive mode.
+
 ### 2.61
 
 * Support for ignorecase
