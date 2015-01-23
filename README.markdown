@@ -35,6 +35,12 @@ following options can be used:
     let g:eregex_forward_delim = '/'
     let g:eregex_backward_delim = '?'
 
+To force case sensitive like perl re. Add the following config:
+
+    let g:eregex_force_case = 1
+
+Then you will have case sensitive match by default. You can always change it by adding `/i` modifier.
+
 ## Changes
 
 ### 2.61
