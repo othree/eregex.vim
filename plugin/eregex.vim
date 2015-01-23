@@ -295,6 +295,12 @@ if !exists('g:eregex_backward_delim')
   let g:eregex_backward_delim = '?'
 endif
 
+"v262
+if !exists('g:eregex_force_case')
+  let g:eregex_force_case = 0
+endif
+
+
 let s:enable = 0
 
 function! eregex#toggle(...)
@@ -742,6 +748,12 @@ function! s:Ematch(...)
         let offset = substitute(offset, '\C[' . s:str_modifiers . ']\+', "", "g")
     endif
 
+    if g:eregex_force_case == 1
+      if match(modifiers, 'i') == -1 && match(modifiers, 'I') == -1
+        let modifiers .= 'I'
+      endif
+    endif
+
     let regex = s:ExtendedRegex2VimRegex(regex, modifiers)
     "v130
     "set s:bakregex
@@ -801,6 +813,12 @@ function! s:Esubstitute(...) range
     if options =~# '[' . s:str_modifiers . ']'
         let modifiers = substitute(options, '\C[^' . s:str_modifiers . ']\+', "", "g")
         let options = substitute(options, '\C[SCDmM]', "", "g")
+    endif
+
+    if g:eregex_force_case == 1
+      if match(modifiers, 'i') == -1 && match(modifiers, 'I') == -1
+        let modifiers .= 'I'
+      endif
     endif
 
     let regex = s:ExtendedRegex2VimRegex(regex, modifiers)
