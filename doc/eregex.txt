@@ -255,7 +255,7 @@ Unusable Vim regexp notation
 
     \x	hex digit:			[0-9A-Fa-f]
                 \\x[0-9A-Fa-f]{1,2} will change to character.
-                \x82\xa0  => '§¢' ( shift-jis, cp932 )
+                \x82\xa0  => '„ÅÇ' ( shift-jis, cp932 )
                 But 0x00 and 0x0a and 0x08 will not change.
 
 Usable Vim regexp notations
