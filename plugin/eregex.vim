@@ -776,6 +776,9 @@ function! s:Ematch(...)
     endif
     if v:errmsg ==# ''
         redraw!
+        if &foldenable && &foldopen =~# 'search'
+            exec 'normal!zv'
+        endif
     else
         echohl WarningMsg | echo v:errmsg
     endif
