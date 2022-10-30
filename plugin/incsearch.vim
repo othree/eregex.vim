@@ -13,11 +13,13 @@ augroup eregex_incsearch_augroup
 augroup END
 
 if !has('nvim')
-    function! K_eregex_incsearch_abort_cr()
-        let s:eregex_incsearch_abort = 0
-        return "\<cr>"
-    endfunction
-    cnoremap <expr> <cr> K_eregex_incsearch_abort_cr()
+    if get(g:, 'eregex_incsearch_abort_fix', 1)
+        function! _eregex_incsearch_abort_cr()
+            let g:eregex_incsearch_abort = 0
+            return "\<cr>"
+        endfunction
+        cnoremap <expr> <cr> _eregex_incsearch_abort_cr()
+    endif
 endif
 
 " it's buggy if update immediately on #CmdlineChanged,
@@ -56,7 +58,7 @@ function! s:onUpdate()
     if !exists('s:patternSaved')
         let s:patternSaved = @/
         if !has('nvim')
-            let s:eregex_incsearch_abort = 1
+            let g:eregex_incsearch_abort = 1
         endif
     endif
     if !exists('s:stateSaved')
@@ -119,7 +121,7 @@ function! s:onLeave()
     if has('nvim')
         let abort = get(v:event, 'abort', 0)
     else
-        let abort = get(s:, 'eregex_incsearch_abort', 0)
+        let abort = get(g:, 'eregex_incsearch_abort', 0)
     endif
     if !abort
         return
