@@ -155,8 +155,8 @@ function! s:cmdParse(cmdline)
         return {}
     endif
     let modes = get(b:, 'eregex_incsearch_modes', get(g:, 'eregex_incsearch_modes', 'MSGV'))
-    " ^[0-9,\.\$%]*([MSGV])\/.*$
-    let method = substitute(items[0], '^[0-9,\.\$%]*\([' . modes . ']\)\/.*$', '\1', '')
+    " ^[0-9,\.\$% ]*([MSGV]) *$
+    let method = substitute(items[0], '^[0-9,\.\$% ]*\([' . modes . ']\) *$', '\1', '')
     if empty(method) || len(method) != 1
         return {}
     endif
