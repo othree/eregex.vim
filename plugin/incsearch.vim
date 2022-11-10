@@ -61,7 +61,12 @@ function! s:onUpdate()
         redraw!
         return
     endif
-    let pattern = E2v(cmd['pattern'])
+    if get(b:, 'eregex_incsearch_force_case', get(g:, 'eregex_incsearch_force_case', get(g:, 'eregex_force_case', 0)))
+                \ && cmd['modifiers'] != 'i'
+        let pattern = E2v(cmd['pattern'], 'I')
+    else
+        let pattern = E2v(cmd['pattern'])
+    endif
     let backward = (cmd['delim'] == '?')
 
     if !exists('s:hlsearchSaved')
@@ -159,17 +164,19 @@ function! s:onLeave()
     redraw!
 endfunction
 
-" input: M/abc
+" input: M/\cabc
 " output: {
 "   'method' : 'M',
 "   'delim' : '/',
+"   'modifiers' : 'i', // empty/i/I
 "   'pattern' : 'abc',
 " }
 "
-" input: 1,3S/abc/xyz/g
+" input: 1,3S/\Cabc/xyz/g
 " output: {
 "   'method' : 'S',
 "   'delim' : '/',
+"   'modifiers' : 'I',
 "   'pattern' : 'abc',
 " }
 function! s:cmdParse(cmdline)
@@ -181,7 +188,9 @@ function! s:cmdParse(cmdline)
     let cmdline = substitute(cmdline, '\\?', questionToken, 'g')
 
     let modes = get(b:, 'eregex_incsearch_modes', get(g:, 'eregex_incsearch_modes', 'MSGV'))
-    let delims = get(b:, 'eregex_incsearch_delims', get(g:, 'eregex_incsearch_delims', '/?'))
+    let delims = get(b:, 'eregex_incsearch_delims', get(g:, 'eregex_incsearch_delims',
+                \   get(g:, 'eregex_forward_delim', '/') . get(g:, 'eregex_backward_delim', '?')
+                \ ))
     " ^[0-9,\.\$% \t]*([MSGV])[ \t]*([\/\?]).*$
     let method = substitute(cmdline, '^[0-9,\.\$% \t]*\([' . modes . ']\)[ \t]*\([' . delims . ']\).*$', '\1', '')
     let delim  = substitute(cmdline, '^[0-9,\.\$% \t]*\([' . modes . ']\)[ \t]*\([' . delims . ']\).*$', '\2', '')
@@ -190,12 +199,22 @@ function! s:cmdParse(cmdline)
     endif
 
     let pattern = get(split(cmdline, delim), 1, '')
+
+    if match(pattern, '\\c') >= 0
+        let modifiers = 'i'
+    elseif match(pattern, '\\C') >= 0
+        let modifiers = 'I'
+    else
+        let modifiers = ''
+    endif
+
     let pattern = substitute(pattern, questionToken, '\\?', 'g')
     let pattern = substitute(pattern, slashToken, '\\/', 'g')
     let pattern = substitute(pattern, bslashToken, '\\\\', 'g')
     return {
                 \   'method' : method,
                 \   'delim' : delim,
+                \   'modifiers' : modifiers,
                 \   'pattern' : pattern,
                 \ }
 endfunction
