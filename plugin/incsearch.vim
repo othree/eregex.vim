@@ -50,6 +50,17 @@ function! s:onUpdate()
     if empty(cmd)
         return
     endif
+    let Fn_filter = get(b:, 'Fn_eregex_incsearch_filter', get(g:, 'Fn_eregex_incsearch_filter', ''))
+    if !empty(Fn_filter) && Fn_filter(cmd['pattern'])
+        if exists('s:patternSaved')
+            let @/ = s:patternSaved
+        endif
+        if exists('s:stateSaved')
+            call winrestview(s:stateSaved)
+        endif
+        redraw!
+        return
+    endif
     let pattern = E2v(cmd['pattern'])
 
     if !exists('s:hlsearchSaved')
