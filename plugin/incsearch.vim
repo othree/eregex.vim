@@ -62,6 +62,7 @@ function! s:onUpdate()
         return
     endif
     let pattern = E2v(cmd['pattern'])
+    let backward = (cmd['delim'] == '?')
 
     if !exists('s:hlsearchSaved')
         let s:hlsearchSaved = &hlsearch
@@ -81,11 +82,21 @@ function! s:onUpdate()
     if !empty(pattern)
         let @/ = pattern
 
-        let pos = searchpos(pattern, 'cnw')
+        let pos = searchpos(pattern, backward ? 'bcnw' : 'cnwz')
         if pos[0] > 0 && pos[1] > 0
-            if pos[1] > 1
-                let pos[1] -= 1
+            " 'reverse' the cursor by one char so that the next `:M` action
+            " would jump to the nearest position
+            "
+            " won't work if 'backward search with multiline pattern'
+            " but that only cause to jump to 'next' match, seems no other side effects
+            if backward
+                let pos[1] += 1
+            else
+                if pos[1] > 1
+                    let pos[1] -= 1
+                endif
             endif
+
             let curpos = getpos('.')
             let curpos[1] = pos[0]
             let curpos[2] = pos[1]
@@ -150,30 +161,42 @@ endfunction
 
 " input: M/abc
 " output: {
-"   'method' : 'M'
-"   'pattern' : 'abc'
+"   'method' : 'M',
+"   'delim' : '/',
+"   'pattern' : 'abc',
 " }
 "
 " input: 1,3S/abc/xyz/g
 " output: {
 "   'method' : 'S',
+"   'delim' : '/',
 "   'pattern' : 'abc',
 " }
 function! s:cmdParse(cmdline)
-    let token = nr2char(127)
-    let items = split(substitute(a:cmdline, '\\/', token, 'g'), '/', 1)
-    if len(items) < 2
-        return {}
-    endif
+    let bslashToken = nr2char(127)
+    let slashToken = nr2char(128)
+    let questionToken = nr2char(129)
+    let cmdline = substitute(a:cmdline, '\\\\', bslashToken, 'g')
+    let cmdline = substitute(cmdline, '\\/', slashToken, 'g')
+    let cmdline = substitute(cmdline, '\\?', questionToken, 'g')
+
     let modes = get(b:, 'eregex_incsearch_modes', get(g:, 'eregex_incsearch_modes', 'MSGV'))
-    " ^[0-9,\.\$% ]*([MSGV]) *$
-    let method = substitute(items[0], '^[0-9,\.\$% ]*\([' . modes . ']\) *$', '\1', '')
-    if empty(method) || len(method) != 1
+    let delims = get(b:, 'eregex_incsearch_delims', get(g:, 'eregex_incsearch_delims', '/?'))
+    " ^[0-9,\.\$% \t]*([MSGV])[ \t]*([\/\?]).*$
+    let method = substitute(cmdline, '^[0-9,\.\$% \t]*\([' . modes . ']\)[ \t]*\([' . delims . ']\).*$', '\1', '')
+    let delim  = substitute(cmdline, '^[0-9,\.\$% \t]*\([' . modes . ']\)[ \t]*\([' . delims . ']\).*$', '\2', '')
+    if len(method) != 1 || len(delim) != 1
         return {}
     endif
+
+    let pattern = get(split(cmdline, delim), 1, '')
+    let pattern = substitute(pattern, questionToken, '\\?', 'g')
+    let pattern = substitute(pattern, slashToken, '\\/', 'g')
+    let pattern = substitute(pattern, bslashToken, '\\\\', 'g')
     return {
                 \   'method' : method,
-                \   'pattern' : substitute(get(items, 1, ''), token, '\\/', 'g'),
+                \   'delim' : delim,
+                \   'pattern' : pattern,
                 \ }
 endfunction
 
