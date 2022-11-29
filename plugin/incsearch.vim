@@ -195,6 +195,15 @@ function! s:cmdParse(cmdline)
     let method = substitute(cmdline, '^[0-9,\.\$% \t]*\([' . modes . ']\)[ \t]*\([' . delims . ']\).*$', '\1', '')
     let delim  = substitute(cmdline, '^[0-9,\.\$% \t]*\([' . modes . ']\)[ \t]*\([' . delims . ']\).*$', '\2', '')
     if len(method) != 1 || len(delim) != 1
+        " {
+        "   'module_name' : function(cmdline),
+        " }
+        for Fn in values(get(g:, 'eregex_incsearch_custom_cmdparser', {}))
+            let ret = Fn(a:cmdline)
+            if !empty(ret)
+                return ret
+            endif
+        endfor
         return {}
     endif
 
