@@ -87,7 +87,11 @@ function! s:onUpdate()
     if !empty(pattern)
         let @/ = pattern
 
-        let pos = searchpos(pattern, backward ? 'bcnw' : 'cnwz')
+        try
+            silent! let pos = searchpos(pattern, backward ? 'bcnw' : 'cnwz')
+        catch
+            let pos = [0, 0]
+        endtry
         if pos[0] > 0 && pos[1] > 0
             " 'reverse' the cursor by one char so that the next `:M` action
             " would jump to the nearest position
