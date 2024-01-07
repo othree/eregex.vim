@@ -61,12 +61,15 @@ function! s:onUpdate()
         redraw!
         return
     endif
+    let modifiers = cmd['modifiers']
     if get(b:, 'eregex_incsearch_force_case', get(g:, 'eregex_incsearch_force_case', get(g:, 'eregex_force_case', 0)))
-                \ && cmd['modifiers'] != 'i'
-        let pattern = E2v(cmd['pattern'], 'I')
-    else
-        let pattern = E2v(cmd['pattern'])
+                \ && match(cmd['modifiers'], 'i') < 0
+                \ && match(cmd['modifiers'], 'I') < 0
+                \ && match(cmd['pattern'], '\\c') < 0
+                \ && match(cmd['pattern'], '\\C') < 0
+        let modifiers .= 'I'
     endif
+    let pattern = E2v(cmd['pattern'], modifiers)
     let backward = (cmd['delim'] == '?')
 
     if !exists('s:hlsearchSaved')
@@ -170,17 +173,15 @@ endfunction
 
 " input: M/\cabc
 " output: {
-"   'method' : 'M',
-"   'delim' : '/',
-"   'modifiers' : 'i', // empty/i/I
+"   'delim' : '/', // `/` or `?`
+"   'modifiers' : '', // modifiers passed to E2v()
 "   'pattern' : 'abc',
 " }
 "
 " input: 1,3S/\Cabc/xyz/g
 " output: {
-"   'method' : 'S',
 "   'delim' : '/',
-"   'modifiers' : 'I',
+"   'modifiers' : '',
 "   'pattern' : 'abc',
 " }
 function! s:cmdParse(cmdline)
@@ -212,22 +213,12 @@ function! s:cmdParse(cmdline)
     endif
 
     let pattern = get(split(cmdline, delim), 1, '')
-
-    if match(pattern, '\\c') >= 0
-        let modifiers = 'i'
-    elseif match(pattern, '\\C') >= 0
-        let modifiers = 'I'
-    else
-        let modifiers = ''
-    endif
-
     let pattern = substitute(pattern, questionToken, '\\?', 'g')
     let pattern = substitute(pattern, slashToken, '\\/', 'g')
     let pattern = substitute(pattern, bslashToken, '\\\\', 'g')
     return {
-                \   'method' : method,
                 \   'delim' : delim,
-                \   'modifiers' : modifiers,
+                \   'modifiers' : get(b:, 'eregex_incsearch_default_modifiers', get(g:, 'eregex_incsearch_default_modifiers', '')),
                 \   'pattern' : pattern,
                 \ }
 endfunction
